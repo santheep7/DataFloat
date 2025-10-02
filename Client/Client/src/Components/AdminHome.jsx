@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../Navbar/Navbar";
+import AdminNavbar from "../Navbar/AdminNavbar";
 
 function AdminHome() {
   const [totalUsers, setTotalUsers] = useState(0);
@@ -16,7 +16,6 @@ function AdminHome() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch total users
     axios
       .get("http://localhost:9000/api/user/count")
       .then(res => setTotalUsers(res.data.totalUsers))
@@ -42,7 +41,7 @@ function AdminHome() {
 
   return (
     <>
-    {/* <Navbar/> */}
+    <AdminNavbar/>
     <div className="min-h-screen bg-gray-100 p-6">
       <h1 className="text-3xl font-bold mb-6 text-gray-700">Admin Dashboard</h1>
 
