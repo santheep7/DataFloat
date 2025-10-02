@@ -52,6 +52,7 @@ export default function Signin() {
               type="email"
               placeholder="Enter your email"
               value={form.email}
+              autoComplete="off"
               onChange={handleChange}
               required
               className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none"
@@ -64,6 +65,7 @@ export default function Signin() {
               name="password"
               type="password"
               placeholder="Enter your password"
+              autoComplete="off"
               value={form.password}
               onChange={handleChange}
               required

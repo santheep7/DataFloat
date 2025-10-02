@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../Navbar/Navbar";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer,toast} from "react-toastify";
 
 export default function Signup() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
@@ -21,7 +21,7 @@ export default function Signup() {
       toast.success("Registeration success..!")
       setTimeout(()=>navigate("/"),1500);
     } catch (err) {
-      alert(err.response?.data?.message || "Signup failed");
+      toast.error("Sign Up Failed")
     }
   };
 
@@ -41,6 +41,7 @@ export default function Signup() {
               type="text"
               placeholder="Enter your name"
               value={form.name}
+              autoComplete="off"
               onChange={handleChange}
               required
               className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-emerald-400 focus:outline-none"
@@ -54,6 +55,7 @@ export default function Signup() {
               type="email"
               placeholder="Enter your email"
               value={form.email}
+              autoComplete="off"
               onChange={handleChange}
               required
               className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-emerald-400 focus:outline-none"
@@ -67,6 +69,7 @@ export default function Signup() {
               type="password"
               placeholder="Create a password"
               value={form.password}
+              autoComplete="off"
               onChange={handleChange}
               required
               className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-emerald-400 focus:outline-none"

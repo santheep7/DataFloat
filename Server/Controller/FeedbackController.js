@@ -8,7 +8,7 @@ const createFeedback = async (req, res) => {
     const { rating, comment } = req.body;
     const userId = req.user.id; 
 
-    if (!rating || !comment) {
+    if (rating == null || !comment || !comment.trim()) {
       return res.status(400).json({ message: "Rating and Comment are required" });
     }
 

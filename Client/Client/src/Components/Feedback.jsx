@@ -6,15 +6,11 @@ import Navbar from "../Navbar/Navbar";
 
 export default function FeedbackForm() {
   const [form, setForm] = useState({
-    rating: 1,
+    rating: 0, // default 0
     comment: "",
   });
 
   const token = localStorage.getItem("token");
-
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,73 +20,84 @@ export default function FeedbackForm() {
       return;
     }
 
+    if (!form.comment.trim()) {
+      toast.error("Comment is required");
+      return;
+    }
+
     try {
       await axios.post(
         "http://localhost:9000/api/feedback/createfeedback",
-        { ...form }, 
+        { ...form },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      toast.success("Feedback submitted successfully!"); 
-      setForm({ rating: 1, comment: "" });
+      toast.success("Feedback submitted successfully!");
+      setForm({ rating: 0, comment: "" }); // reset after submit
     } catch (err) {
-      toast.error(err.response?.data?.message || "Feedback submission failed"); // ✅ toast
+      toast.error(err.response?.data?.message || "Feedback submission failed");
     }
   };
 
   return (
     <>
-    <Navbar/>
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-100 to-blue-200">
-      <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center text-indigo-600 mb-6">
-          Submit Feedback
-        </h2>
-
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Rating (1 - 5)
-            </label>
-            <select
-              name="rating"
-              value={form.rating}
-              onChange={handleChange}
-              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none"
-            >
-              {[1, 2, 3, 4, 5].map((num) => (
-                <option key={num} value={num}>
-                  {num}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Comment
-            </label>
-            <textarea
-              name="comment"
-              placeholder="Write your feedback..."
-              value={form.comment}
-              onChange={handleChange}
-              required
-              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none"
-              rows="4"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg font-semibold transition duration-200"
-          >
+      <Navbar />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-100 to-blue-200">
+        <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
+          <h2 className="text-2xl font-bold text-center text-indigo-600 mb-6">
             Submit Feedback
-          </button>
-        </form>
+          </h2>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {/* ⭐ Star Rating */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Rating
+              </label>
+              <div className="flex items-center space-x-1">
+                {[0, 1, 2, 3, 4, 5].map((num) => (
+                  <button
+                    key={num}
+                    type="button"
+                    onClick={() => setForm({ ...form, rating: num })}
+                    className="text-2xl focus:outline-none"
+                  >
+                    {num <= form.rating ? "★" : "☆"}
+                  </button>
+                ))}
+              </div>
+              <p className="text-sm text-gray-500 mt-1">Current rating: {form.rating}</p>
+            </div>
+
+            {/* Comment */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Comment
+              </label>
+              <textarea
+                name="comment"
+                placeholder="Write your feedback..."
+                value={form.comment}
+                onChange={(e) =>
+                  setForm({ ...form, comment: e.target.value })
+                }
+                required
+                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                rows="4"
+              />
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg font-semibold transition duration-200"
+            >
+              Submit Feedback
+            </button>
+          </form>
+        </div>
+        <ToastContainer position="top-center" autoClose={2000} />
       </div>
-      <ToastContainer position="top-center" autoClose={2000} />
-    </div>
     </>
   );
 }
