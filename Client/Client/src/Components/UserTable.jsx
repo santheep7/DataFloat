@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 function UsersTable() {
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     axios
-      .get("http://localhost:9000/api/feedback/getall") 
+      .get(`${API_BASE_URL}/api/feedback/getall`) 
       .then((res) => {
         const grouped = {};
         res.data.forEach((f) => {

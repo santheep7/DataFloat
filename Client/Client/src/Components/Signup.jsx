@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../Navbar/Navbar";
 import { ToastContainer,toast} from "react-toastify";
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function Signup() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
@@ -16,7 +17,7 @@ export default function Signup() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:9000/api/user/Register", form);
+      const res = await axios.post(`${API_BASE_URL}/api/user/Register`, form);
 
       toast.success("Registeration success..!")
       setTimeout(()=>navigate("/"),1500);

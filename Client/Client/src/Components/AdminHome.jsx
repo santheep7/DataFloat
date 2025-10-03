@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import AdminNavbar from "../Navbar/AdminNavbar";
 
 function AdminHome() {
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   const [totalUsers, setTotalUsers] = useState(0);
   const [sentimentData, setSentimentData] = useState({
     positive: 0,
@@ -17,12 +19,12 @@ function AdminHome() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:9000/api/user/count")
+      .get(`${API_BASE_URL}/api/user/count`)
       .then(res => setTotalUsers(res.data.totalUsers))
       .catch(err => console.error("Users API Error:", err));
 
     axios
-      .get("http://localhost:9000/api/feedback/summary")
+      .get(`${API_BASE_URL}/api/feedback/summary`)
       .then(res => setSentimentData(res.data))
       .catch(err => console.error("Feedback Summary API Error:", err));
   }, []);

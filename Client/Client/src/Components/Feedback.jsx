@@ -5,6 +5,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Navbar from "../Navbar/Navbar";
 
 export default function FeedbackForm() {
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   const [form, setForm] = useState({
     rating: 0, // default 0
     comment: "",
@@ -16,7 +18,7 @@ export default function FeedbackForm() {
     e.preventDefault();
 
     if (!token) {
-      toast.error("Please log in first."); 
+      toast.error("Please log in first.");
       return;
     }
 
@@ -27,7 +29,7 @@ export default function FeedbackForm() {
 
     try {
       await axios.post(
-        "http://localhost:9000/api/feedback/createfeedback",
+        `${API_BASE_URL}/api/feedback/createfeedback`,
         { ...form },
         { headers: { Authorization: `Bearer ${token}` } }
       );
